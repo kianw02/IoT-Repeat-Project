@@ -1,0 +1,40 @@
+/* Values below are examples */
+const String TWILIO_ACCOUNT_SID = "Exaple1";
+const String TWILIO_AUTH_TOKEN = "Exaple2";
+const String TWILIO_NUMBER = "012345";
+const String RECIPIENT_NUMBER = "089 123 4567";
+
+boolean success = false;
+
+void setup() {
+  Serial.begin(9600);
+  delay(4000);
+  while(!Serial);
+  Bridge.begin();
+}
+
+void loop()
+{
+  if (!success) {
+
+    Serial.println("Sending SMS message.");
+    
+    SendSMSChoreo.addInput("AccountSID", TWILIO_ACCOUNT_SID);
+    SendSMSChoreo.addInput("AuthToken", TWILIO_AUTH_TOKEN);
+    SendSMSChoreo.addInput("From", TWILIO_NUMBER);
+    SendSMSChoreo.addInput("To", RECIPIENT_NUMBER);
+    
+    if (returnCode == 0) {
+        Serial.println("SMS message successfully sent.");
+        success = true;
+    } else {
+      while (SendSMSChoreo.available()) {
+        char c = SendSMSChoreo.read();
+        Serial.print(c);
+      }
+    } 
+    SendSMSChoreo.close();
+    Serial.println("Processing.");
+    delay(60000);
+  }
+}
